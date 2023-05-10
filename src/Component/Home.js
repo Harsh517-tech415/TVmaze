@@ -25,7 +25,7 @@ const Home = () => {
     <Container>
       <Stack
         direction="row"
-        sx={{ gap: { lg: "80px", xs: "50px" } }}
+        sx={{ gap: { lg: "80px", xs: "50px" },mt:"4%"}}
         flexWrap="wrap"
         justifyContent="center"
       >
