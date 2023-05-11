@@ -6,6 +6,8 @@ import Home from './Component/Home';
 import Show from './Component/Show';
 import { createContext, useState } from 'react';
 import Result from './Component/Result';
+import Login from './Component/Login';
+import BookMark from './Component/BookMark';
 export const searchData=createContext();
 
 function App() {
@@ -19,7 +21,8 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/:id' element={<Show/>}/>
         <Route path='result' element={<Result/>}/>
-
+        <Route path="/login" element={<Login/>}/>
+        <Route path='/bookmark' element={<BookMark/>}/>
       </Routes>
     </Box>
     </searchData.Provider>

@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -31,7 +31,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [shows, setShows] = useState([]);
   const [display,setDisplay]=useState("none")
-
   const [searchShows, setSearchShows] = useState([]);
 
   const searchValue = useRef();
@@ -144,6 +143,13 @@ const Navbar = () => {
             direction="row"
             sx={{ display: { xs: "none", md: "flex" } }}
             gap={5}
+          > <Button sx={{color:"white"}} onClick={()=>{navigate("/login")}}>Login</Button>
+          <Button sx={{color:"white"}} onClick={()=>{navigate("/bookmark")}}>Bookmark</Button>
+          </Stack>
+          {/* <Stack
+            direction="row"
+            sx={{ display: { xs: "none", md: "flex" } }}
+            gap={5}
           >
             <Typography
               onClick={() => {
@@ -181,7 +187,7 @@ const Navbar = () => {
             >
               Actor
             </Typography>
-          </Stack>
+          </Stack> */}
           <Stack>
   <Stack direction="row" gap={5}>
     <TextField
