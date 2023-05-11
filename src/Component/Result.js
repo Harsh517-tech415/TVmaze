@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { searchData } from "../App";
-import { Box, Card, CardContent, Stack } from "@mui/material";
-
+import { Box, Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
+import StarIcon from '@mui/icons-material/Star';
+import { useNavigate } from "react-router-dom";
 const Result = () => {
+    const navigate=useNavigate()
   const { result } = useContext(searchData);
   const [genres, setGenres] = useState([]);
   let genresIndex = useRef({
@@ -59,8 +61,9 @@ const Result = () => {
       }
     });
     setGenres((genres) => [...new Set(genres)]);
-    {console.log(genresIndex.current)}
-
+    {
+      console.log(genresIndex.current);
+    }
   }, []);
 
   return (
@@ -68,11 +71,29 @@ const Result = () => {
       {genres.map((item) => (
         <Box key={item}>
           <CardContent>{item}</CardContent>
-          <Stack direction="row" sx={{ overflowX: "scroll" }}>
-            {(genresIndex.current[item].map((index) => {
-                const data = result[index];
-              return(<Card>{data['score']}</Card>)
-            }))}
+          <Stack
+            direction="row"
+            id="slider"
+            sx={{ overflowX: "scroll", justifyContent: "left", pl: "20px" }}
+            gap={1}
+          >
+            {genresIndex.current[item].map((index) => {
+              const data = result[index];
+              return (
+                <Card sx={{ minWidth: "200px", maxWidth: "200px",cursor:"pointer" }} onClick={()=>{navigate(`/${data['show']['id']}`)}}>
+                  {data["show"]["image"] != null ? (
+                    <CardMedia
+                      component="img"
+                      src={data["show"]["image"]["original"]}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                 <Stack direction="row" gap={1}> <Typography><StarIcon sx={{color:"#f5c518"}}/></Typography><Typography sx={{mt:"1%"}}>{data["show"]["rating"]["average"]}</Typography></Stack>
+                 <CardContent sx={{fontWeight:"bold",textAlign:"center"}}>{data['show']['name']}</CardContent>
+                </Card>
+              );
+            })}
           </Stack>
         </Box>
       ))}
