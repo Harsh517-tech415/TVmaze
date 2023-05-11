@@ -5,15 +5,18 @@ import { doc, getDoc } from "firebase/firestore";
 import axios from "axios";
 import StarIcon from "@mui/icons-material/Star";
 import {
+  Alert,
   Card,
   CardContent,
   CardMedia,
   Container,
+  Snackbar,
   Stack,
   Typography,
 } from "@mui/material";
 const cookies = require("js-cookie");
 const BookMark = () => {
+  const [open,setOpen]=useState(false)
   const [id, setId] = useState([]);
   const [shows, setShows] = useState([]);
   const navigate = useNavigate();
@@ -82,6 +85,23 @@ const BookMark = () => {
           </Card>
         ))}
       </Stack>
+      <Snackbar
+        open={open}
+        autoHideDuration={4000}
+        onClose={() => {
+          setOpen(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setOpen(false);
+          }}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Show Added Successfully
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

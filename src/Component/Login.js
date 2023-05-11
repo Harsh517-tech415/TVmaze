@@ -147,14 +147,14 @@ const Login = () => {
           <TabPanel value={value} index={0}>
             <CardContent>Email:</CardContent>
             <CardContent>
-              <TextField inputRef={email1} sx={{ width: "400px" }} />
+              <TextField inputRef={email1} sx={{ width:{xs:"230px",sm:"340px",md: "400px"} }} />
             </CardContent>
             <CardContent>Password:</CardContent>
             <CardContent>
               <TextField
                 type="password"
                 inputRef={password1}
-                sx={{ width: "400px" }}
+                sx={{width:{xs:"230px",sm:"340px",md: "400px"} }}
               />
             </CardContent>
             <CardContent sx={{ textAlign: "center" }}>
@@ -166,14 +166,14 @@ const Login = () => {
           <TabPanel value={value} index={1}>
             <CardContent>Email:</CardContent>
             <CardContent>
-              <TextField inputRef={email2} sx={{ width: "400px" }} />
+              <TextField inputRef={email2} sx={{width:{xs:"230px",sm:"340px",md: "400px"} }} />
             </CardContent>
             <CardContent>Password:</CardContent>
             <CardContent>
               <TextField
                 type="password"
                 inputRef={password2}
-                sx={{ width: "400px" }}
+                sx={{width:{xs:"230px",sm:"340px",md: "400px"}}}
               />
             </CardContent>
             <CardContent sx={{ textAlign: "center" }}>
