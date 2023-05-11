@@ -66,7 +66,8 @@ const Home = () => {
           variant="outlined"
           color="primary"
           defaultPage={1}
-          onChange={paginate}/>
+          onChange={paginate}
+          sx={{pb:"100px"}}/>
         )}
       </Stack>
     </Container>

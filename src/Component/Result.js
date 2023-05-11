@@ -1,10 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { searchData } from "../App";
-import { Box, Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
-import StarIcon from '@mui/icons-material/Star';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Stack,
+  Typography,
+} from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
 const Result = () => {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
   const { result } = useContext(searchData);
   const [genres, setGenres] = useState([]);
   let genresIndex = useRef({
@@ -70,7 +77,7 @@ const Result = () => {
     <Stack>
       {genres.map((item) => (
         <Box key={item}>
-          <CardContent>{item}</CardContent>
+          <CardContent sx={{fontSize:"20px",fontWeight:"bold"}}>{item}</CardContent>
           <Stack
             direction="row"
             id="slider"
@@ -80,7 +87,16 @@ const Result = () => {
             {genresIndex.current[item].map((index) => {
               const data = result[index];
               return (
-                <Card sx={{ minWidth: "200px", maxWidth: "200px",cursor:"pointer" }} onClick={()=>{navigate(`/${data['show']['id']}`)}}>
+                <Card
+                  sx={{
+                    minWidth: "200px",
+                    maxWidth: "200px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    navigate(`/${data["show"]["id"]}`);
+                  }}
+                >
                   {data["show"]["image"] != null ? (
                     <CardMedia
                       component="img"
@@ -89,8 +105,18 @@ const Result = () => {
                   ) : (
                     <></>
                   )}
-                 <Stack direction="row" gap={1}> <Typography><StarIcon sx={{color:"#f5c518"}}/></Typography><Typography sx={{mt:"1%"}}>{data["show"]["rating"]["average"]}</Typography></Stack>
-                 <CardContent sx={{fontWeight:"bold",textAlign:"center"}}>{data['show']['name']}</CardContent>
+                  <Stack direction="row" gap={1}>
+                    {" "}
+                    <Typography>
+                      <StarIcon sx={{ color: "#f5c518" }} />
+                    </Typography>
+                    <Typography sx={{ mt: "1%" }}>
+                      {data["show"]["rating"]["average"]}
+                    </Typography>
+                  </Stack>
+                  <CardContent sx={{ fontWeight: "bold", textAlign: "center" }}>
+                    {data["show"]["name"]}
+                  </CardContent>
                 </Card>
               );
             })}

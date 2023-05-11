@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   Alert,
   Box,
@@ -22,6 +22,7 @@ import {
 import { auth, db } from "../Firebase";
 import { useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
+import { searchData } from "../App";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -48,6 +49,7 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 const Login = () => {
+  const {setNav}=useContext(searchData)
   const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
   const password2 = useRef("");
@@ -71,6 +73,7 @@ const Login = () => {
         setMessage("User LoggedIn Successfully");
         setSeverity("success");
         setOpen(true);
+        setNav(true)
         navigate("/");
       })
       .catch((err) => {
@@ -93,7 +96,7 @@ const Login = () => {
         setOpen(true);
         async function createNewCollection() {
           try {
-            await setDoc(doc(db, `${res.user.uid}`, "BookMark"), {}).then(
+            await setDoc(doc(db, `${res.user.uid}`, "BookMark"), {id:[]}).then(
               (res) => {
                 console.log(res);
               }

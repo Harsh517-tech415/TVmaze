@@ -20,6 +20,7 @@ const ShowCard = ({ item }) => {
     try {
       await getDoc(doc(db, `${cookie.get("!@#")}`, "BookMark")).then((data) => {
         data = data.data();
+        data=data.id;
         async function setData() {
           try {
             await setDoc(doc(db, `${cookie.get("!@#")}`, "BookMark"), {
@@ -31,6 +32,7 @@ const ShowCard = ({ item }) => {
             console.log(err);
           }
         }
+
         setData()
       });
     } catch (err) {

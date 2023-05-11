@@ -17,22 +17,26 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 import React, { useContext, useEffect, useRef, useState } from "react";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { searchData } from "../App";
 const Navbar = () => {
   const navigate = useNavigate();
-  const { result, setResult } = useContext(searchData);
+  const {  setResult,nav,setNav } = useContext(searchData);
   const [open, setOpen] = useState(false);
   const [shows, setShows] = useState([]);
-  const [display,setDisplay]=useState("none")
+  const [display, setDisplay] = useState("none");
   const [searchShows, setSearchShows] = useState([]);
-
+  const [displayTextField,setDisplayTextField]=useState("none")
   const searchValue = useRef();
   const axiosInstance = axios.create({
     baseURL: "https://api.tvmaze.com/shows",
@@ -55,6 +59,7 @@ const Navbar = () => {
         });
     }
     getData();
+    setDisplayTextField("none")
     window.addEventListener("click", handleClickOutside);
     return () => {
       window.removeEventListener("click", handleClickOutside);
@@ -72,7 +77,7 @@ const Navbar = () => {
       });
     navigate(`/result`);
   }
-  
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -112,12 +117,29 @@ const Navbar = () => {
               }}
             >
               <List>
-                <ListItem>
+                <ListItem onClick={()=>{navigate('/')}}>
                   <ListItemIcon>
                     <HomeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Home" />
                 </ListItem>
+                <ListItem onClick={()=>{navigate('/bookmark')}}>
+                  <ListItemIcon>
+                    <BookmarkIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Bookmarks" />
+                </ListItem>
+                {nav?(<ListItem onClick={()=>{setNav(false)}}>
+                  <ListItemIcon>
+                    <LogoutIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Logout" />
+                </ListItem>):(<ListItem onClick={()=>{navigate('/login')}}>
+                  <ListItemIcon>
+                    <LoginIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Login" />
+                </ListItem>)}
               </List>
             </Drawer>
           </Box>
@@ -143,61 +165,65 @@ const Navbar = () => {
             direction="row"
             sx={{ display: { xs: "none", md: "flex" } }}
             gap={5}
-          > <Button sx={{color:"white"}} onClick={()=>{navigate("/login")}}>Login</Button>
-          <Button sx={{color:"white"}} onClick={()=>{navigate("/bookmark")}}>Bookmark</Button>
-          </Stack>
-          {/* <Stack
-            direction="row"
-            sx={{ display: { xs: "none", md: "flex" } }}
-            gap={5}
           >
-            <Typography
-              onClick={() => {
-                navigate("/");
-              }}
-              sx={{
+             <Typography
+               sx={{
                 textDecoration: "none",
                 cursor: "pointer",
                 fontWeight: "bold",
               }}
-            >
-              Shows
-            </Typography>
-            <Typography
               onClick={() => {
                 navigate("/");
               }}
-              sx={{
+            >
+              Home
+            </Typography>
+            <Typography
+               sx={{
                 textDecoration: "none",
                 cursor: "pointer",
                 fontWeight: "bold",
               }}
-            >
-              Movies
-            </Typography>
-            <Typography
               onClick={() => {
-                navigate("/");
-              }}
-              sx={{
-                textDecoration: "none",
-                cursor: "pointer",
-                fontWeight: "bold",
+                navigate("/bookmark");
               }}
             >
-              Actor
+              Bookmark
             </Typography>
-          </Stack> */}
-          <Stack>
-  <Stack direction="row" gap={5}>
-    <TextField
+              {nav?(<Typography
+                 sx={{
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+                onClick={() => {
+                  document.cookie="!@#=";
+                  setNav(false)
+                }}
+              >
+                Logout
+              </Typography>):(<Typography
+                 sx={{
+                  textDecoration: "none",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                Login
+              </Typography>)}
+              </Stack>
+             {displayTextField==="none"?(<Button sx={{ml: "100px",color:"white"}} onClick={()=>{setDisplayTextField("ok")}}><SearchIcon />Search</Button>):(<TextField
       inputRef={searchValue}
       autoComplete="on"
+      variant="standard"
       sx={{
-        backgroundColor: "white",
+        // backgroundColor: "white",
         ml: "100px",
-        minWidth:"200px",
-        maxWidth:"250px"
+        minWidth:"150px",
+        maxWidth:"200px"
       }}
       placeholder="Enter show name"
       onClick={() => {
@@ -209,59 +235,45 @@ const Navbar = () => {
         });
         setSearchShows(data);
       }}
-    />
-    {/* <Typography
-      variant="button"
-      component="div"
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        cursor:"pointer"
-      }}
-    >
-      Search
-    </Typography> */}
-  </Stack>
+    />)}
 
-  <Card
-    onClose={() => {
-      setDisplay("none");
-    }}
-    sx={{
-      display: display,
-      maxHeight: "200px",
-      overflowY: "scroll",
-      width:"inherit",
-      position: "absolute",
-      top: "calc(100% + 10px)", // Adjust the top value as per your requirement
-      right: {xs:70,sm:100,md:180,lg:580,xl:750}, // Adjust the left value as per your requirement
-      zIndex: 9,
-    }}
-  >
-     <Stack sx={{ overflowY: "scroll" }}>
-    <InfiniteScroll
-      id="slider"
-      dataLength={searchShows.length}
-      loader={<h4>Loading...</h4>}
-    >
-      {searchShows.map((item) => (
-        <Box
-          key={item.id}
-          onClick={() => {
-            setData(item["name"]);
-          }}
-          sx={{ cursor: "pointer" }}
-        >
-          {item.name}
-          <Divider />
-        </Box>
-      ))}
-    </InfiniteScroll>
-  </Stack>
-  </Card>
-</Stack>
 
+            <Card
+              onClose={() => {
+                setDisplay("none");
+              }}
+              sx={{
+                display: display,
+                maxHeight: "200px",
+                overflowY: "scroll",
+                width: "inherit",
+                position: "absolute",
+                top: "calc(100% + 10px)", // Adjust the top value as per your requirement
+                right: { xs: -10, sm: -10, md: 150, lg: 580, xl: 750 }, // Adjust the left value as per your requirement
+                zIndex: 9,
+              }}
+            >
+              <Stack sx={{ overflowY: "scroll" }}>
+                <InfiniteScroll
+                  id="slider"
+                  dataLength={searchShows.length}
+                  loader={<h4>Loading...</h4>}
+                >
+                  {searchShows.map((item) => (
+                    <Box
+                      key={item.id}
+                      onClick={() => {
+                        setData(item["name"]);
+                      }}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      {item.name}
+                      <Divider />
+                    </Box>
+                  ))}
+                </InfiniteScroll>
+              </Stack>
+            </Card>
         </Toolbar>
       </Container>
     </AppBar>

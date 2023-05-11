@@ -12,9 +12,10 @@ export const searchData=createContext();
 
 function App() {
   const [result,setResult]=useState([])
+  const [nav,setNav]=useState(false)
   return (
   <BrowserRouter>
-  <searchData.Provider value={{result:result,setResult:setResult}}>
+  <searchData.Provider value={{nav:nav,setNav:setNav,result:result,setResult:setResult}}>
     <Box>
       <Navbar/>
       <Routes>
