@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Menu,
   Stack,
   TextField,
   Toolbar,
@@ -26,15 +27,23 @@ import axios from "axios";
 import { searchData } from "../App";
 const Navbar = () => {
   const navigate = useNavigate();
-  const {result,setResult}=useContext(searchData)
+  const { result, setResult } = useContext(searchData);
   const [open, setOpen] = useState(false);
   const [shows, setShows] = useState([]);
+  const [display,setDisplay]=useState("none")
+
   const [searchShows, setSearchShows] = useState([]);
 
-  const searchValue=useRef()
+  const searchValue = useRef();
   const axiosInstance = axios.create({
     baseURL: "https://api.tvmaze.com/shows",
   });
+  const handleClickOutside = (event) => {
+    if (searchValue.current && !searchValue.current.contains(event.target)) {
+      setDisplay("none");
+    }
+  };
+
   useEffect(() => {
     async function getData() {
       const data = await axiosInstance
@@ -47,13 +56,24 @@ const Navbar = () => {
         });
     }
     getData();
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
   }, []);
-  async function setData(value)
-  {
-    const data=await axios.get(` http://api.tvmaze.com/search/shows?q=${value}`).then((res)=>{setResult(res.data)}).catch((err)=>{console.log(err)})
-    navigate(`/result`)
+
+  async function setData(value) {
+    const data = await axios
+      .get(` http://api.tvmaze.com/search/shows?q=${value}`)
+      .then((res) => {
+        setResult(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    navigate(`/result`);
   }
- useEffect(()=>{console.log(result)},[result])
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -123,7 +143,7 @@ const Navbar = () => {
           <Stack
             direction="row"
             sx={{ display: { xs: "none", md: "flex" } }}
-            gap={10}
+            gap={5}
           >
             <Typography
               onClick={() => {
@@ -163,28 +183,79 @@ const Navbar = () => {
             </Typography>
           </Stack>
           <Stack>
-            <TextField
-            inputRef={searchValue}
-              sx={{
-                display: { xs: "none", md: "flex" },
-                backgroundColor: "white",
-              }}
-              placeholder="Enter show name"
-              onChange={()=>{
-                const data=shows.filter((item)=>{return (item['name'].toLowerCase().includes(searchValue.current.value))})
-             setSearchShows(data) }}
-            />
-            <Card sx={{ width: "inherit",height:"300px" }}>
-            <Stack>
-            <InfiniteScroll
-              dataLength={shows.length}
-              loader={<h4>Loading...</h4>}
-            >
-                {searchShows.map((item)=>(<Box onClick={()=>{setData(item['name'])}} sx={{cursor:'pointer'}}>{item['name']}<Divider/></Box>))}
-            </InfiniteScroll>
-            </Stack>
-            </Card>
-          </Stack>
+  <Stack direction="row" gap={5}>
+    <TextField
+      inputRef={searchValue}
+      autoComplete="on"
+      sx={{
+        backgroundColor: "white",
+        ml: "100px",
+        minWidth:"200px",
+        maxWidth:"250px"
+      }}
+      placeholder="Enter show name"
+      onClick={() => {
+        setDisplay("ok");
+      }}
+      onChange={() => {
+        const data = shows.filter((item) => {
+          return item["name"].toLowerCase().includes(searchValue.current.value);
+        });
+        setSearchShows(data);
+      }}
+    />
+    {/* <Typography
+      variant="button"
+      component="div"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        cursor:"pointer"
+      }}
+    >
+      Search
+    </Typography> */}
+  </Stack>
+
+  <Card
+    onClose={() => {
+      setDisplay("none");
+    }}
+    sx={{
+      display: display,
+      maxHeight: "200px",
+      overflowY: "scroll",
+      width:"inherit",
+      position: "absolute",
+      top: "calc(100% + 10px)", // Adjust the top value as per your requirement
+      right: {xs:70,sm:100,md:180,lg:580,xl:750}, // Adjust the left value as per your requirement
+      zIndex: 9,
+    }}
+  >
+     <Stack sx={{ overflowY: "scroll" }}>
+    <InfiniteScroll
+      id="slider"
+      dataLength={searchShows.length}
+      loader={<h4>Loading...</h4>}
+    >
+      {searchShows.map((item) => (
+        <Box
+          key={item.id}
+          onClick={() => {
+            setData(item["name"]);
+          }}
+          sx={{ cursor: "pointer" }}
+        >
+          {item.name}
+          <Divider />
+        </Box>
+      ))}
+    </InfiniteScroll>
+  </Stack>
+  </Card>
+</Stack>
+
         </Toolbar>
       </Container>
     </AppBar>
