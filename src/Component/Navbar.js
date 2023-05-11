@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   Container,
+  Divider,
   Drawer,
   IconButton,
   List,
@@ -15,15 +16,17 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
+import { searchData } from "../App";
 const Navbar = () => {
   const navigate = useNavigate();
+  const {result,setResult}=useContext(searchData)
   const [open, setOpen] = useState(false);
   const [shows, setShows] = useState([]);
   const [searchShows, setSearchShows] = useState([]);
@@ -45,7 +48,12 @@ const Navbar = () => {
     }
     getData();
   }, []);
- 
+  async function setData(value)
+  {
+    const data=await axios.get(` http://api.tvmaze.com/search/shows?q=${value}`).then((res)=>{setResult(res.data)}).catch((err)=>{console.log(err)})
+    navigate(`/result`)
+  }
+ useEffect(()=>{console.log(result)},[result])
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -172,7 +180,7 @@ const Navbar = () => {
               dataLength={shows.length}
               loader={<h4>Loading...</h4>}
             >
-                {searchShows.map((item)=>(<div>{item['name']}</div>))}
+                {searchShows.map((item)=>(<Box onClick={()=>{setData(item['name'])}} sx={{cursor:'pointer'}}>{item['name']}<Divider/></Box>))}
             </InfiniteScroll>
             </Stack>
             </Card>

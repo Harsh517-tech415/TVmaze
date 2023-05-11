@@ -28,6 +28,7 @@ const Show = () => {
   ]);
   useEffect(() => {
     async function getData() {
+      
       const data = await axiosInstance
         .get(`${location.pathname}`)
         .then((res) => {
