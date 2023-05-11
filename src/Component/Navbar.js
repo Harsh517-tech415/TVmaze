@@ -143,13 +143,15 @@ const Navbar = () => {
               </List>
             </Drawer>
           </Box>
+          <Box sx={{display:"flex",justifyContent:"center"}}>
           <LiveTvIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
+              
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
@@ -161,6 +163,7 @@ const Navbar = () => {
           >
             TVMaze
           </Typography>
+          </Box>
           <Stack
             direction="row"
             sx={{ display: { xs: "none", md: "flex" } }}
@@ -215,14 +218,14 @@ const Navbar = () => {
                 Login
               </Typography>)}
               </Stack>
-             {displayTextField==="none"?(<Button sx={{ml: "100px",color:"white"}} onClick={()=>{setDisplayTextField("ok")}}><SearchIcon />Search</Button>):(<TextField
+             {displayTextField==="none"?(<Button sx={{ml: {xs:"10px",md:"100px"},color:"white"}} onClick={()=>{setDisplayTextField("ok")}}><SearchIcon />Search</Button>):(<TextField
       inputRef={searchValue}
       autoComplete="on"
       variant="standard"
       sx={{
         // backgroundColor: "white",
-        ml: "100px",
-        minWidth:"150px",
+        ml: {xs:"10px",md:"100px"},
+        minWidth:"130px",
         maxWidth:"200px"
       }}
       placeholder="Enter show name"
