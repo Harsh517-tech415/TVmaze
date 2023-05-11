@@ -122,12 +122,10 @@ const Show = () => {
         </CardContent>
         <CardContent sx={{ fontSize: "30px" }}>Cast</CardContent>
         <CardContent>
-          {/* <Box sx={{ display: "flex", justifyContent: "center" }}> */}
             <Stack
               direction="row"
               flexWrap="wrap"
               justifyContent="center"
-            //   spacing={1}
             >
               {cast.map((item) => (
                 <Stack direction="row" spacing={2} columnGap={2} sx={{mt:1}}>
@@ -148,7 +146,6 @@ const Show = () => {
                 </Stack>
               ))}
             </Stack>
-          {/* </Box> */}
         </CardContent>
       </Box>
     </Box>
