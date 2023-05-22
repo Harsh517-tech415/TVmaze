@@ -77,7 +77,9 @@ const Result = () => {
     <Stack>
       {genres.map((item) => (
         <Box key={item}>
-          <CardContent sx={{fontSize:"20px",fontWeight:"bold"}}>{item}</CardContent>
+          <CardContent sx={{ fontSize: "20px", fontWeight: "bold" }}>
+            {item}
+          </CardContent>
           <Stack
             direction="row"
             id="slider"

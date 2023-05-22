@@ -223,7 +223,7 @@ const Navbar = () => {
       autoComplete="on"
       variant="standard"
       sx={{
-        // backgroundColor: "white",
+        position:"relative",
         ml: {xs:"10px",md:"100px"},
         minWidth:"130px",
         maxWidth:"200px"
@@ -256,7 +256,7 @@ const Navbar = () => {
                 zIndex: 9,
               }}
             >
-              <Stack sx={{ overflowY: "scroll" }}>
+              {/* <Stack sx={{ overflowY: "scroll" }}> */}
                 <InfiniteScroll
                   id="slider"
                   dataLength={searchShows.length}
@@ -275,7 +275,7 @@ const Navbar = () => {
                     </Box>
                   ))}
                 </InfiniteScroll>
-              </Stack>
+              {/* </Stack> */}
             </Card>
         </Toolbar>
       </Container>
