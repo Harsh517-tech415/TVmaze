@@ -67,6 +67,7 @@ const Navbar = () => {
   }, []);
 
   async function setData(value) {
+    console.log(value)
     const data = await axios
       .get(` http://api.tvmaze.com/search/shows?q=${value}`)
       .then((res) => {
